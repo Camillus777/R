@@ -1,6 +1,7 @@
 library(tidyverse)
 
-data = read_csv2("PriceTest.csv", col_types = cols(.default = "c"))
+#Import and prepare data
+data = read_csv2("Test.csv", col_types = cols(.default = "c"))
 data = data[1:30,]
 data$APR = gsub(",",".",data$APR)
 data$APR = gsub("%","",data$APR)
@@ -9,7 +10,18 @@ data$ticket_size = as.numeric(gsub(" ","",data$ticket_size))
 data$`APR*ticket_size` = as.numeric(gsub(" ","",data$`APR*ticket_size`))
 data$lt_iNI = as.numeric(gsub(" ","",data$lt_iNI))
 
-str(data)
+
+# visualise data
+#str(data)
+head(data)
+glimpse(data)
+
+ggscatmat(as.data.frame(data)) # will show only number column against each other
+ggpairs(test, mapping = ggplot2::aes(color =test_grp_flg, alpha = 0.8)) # will show all columns against each other
+ggduo(test, 1,2:3, mapping = ggplot2::aes(color =test_grp_flg, alpha = 0.8)) # will show one group of columns against another    
+
+tableplot(data)
+tableplot(data, select = c(APR, ticket_size),sortCol = APR)
 
 #data pivot summary
 data %>% 
